@@ -1,4 +1,4 @@
-import { Controller, Patch, Param, Body } from '@nestjs/common';
+import { Controller, Put, Param, Body } from '@nestjs/common'; 
 import { StudentService } from './students.service';
 import { UpdateStudentDto } from './dto/update-student.dto';
 
@@ -6,8 +6,8 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentService.updateStudent(+id, updateStudentDto);  // Cast id to number
+    return this.studentService.update(+id, updateStudentDto); 
   }
 }
