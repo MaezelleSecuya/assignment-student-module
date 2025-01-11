@@ -1,16 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { StudentService } from './students.service';
-import { UpdateStudentDto } from './dto/update-student.dto';
-
 
 @Controller('students')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Get()
-findAll() {
-  return this.studentService.findAll();
-}
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.studentService.findOne(id);
+  }
 
   
 }
