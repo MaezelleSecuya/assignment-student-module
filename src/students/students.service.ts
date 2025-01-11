@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { Controller, Delete, Param } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { Repository } from 'typeorm';
@@ -11,12 +10,15 @@ export class StudentService {
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
   ){}
-  async deleteStudent(id: number): Promise<void> {
-    await this.studentRepository.delete(id);
+  async delete(id: number): Promise<{ message: string }> {
+    const student = await this.studentRepository.findOne({ where: { id } });
+
+    if (!student) {
+      throw new NotFoundException(`Student with ID ${id} not found`);
+    }
+
+    await this.studentRepository.remove(student);
+    return { message: `Student with ID ${id} has been deleted` };
   }
-  
-  
-  
-  
-  
 }
+  
